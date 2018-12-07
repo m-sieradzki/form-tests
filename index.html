@@ -111,11 +111,38 @@ html2canvas(document.querySelector("#capture")).then(canvas => {
   document.querySelector("#artboard").appendChild(canvas);
   var flatten = canvas.getContext('2d');
   var img = canvas.toDataURL();
-  console.log("hi" + img);
+  var image = new Image();
+  image.id = "pic"
+  image.src = img
+  document.getElementById('artboard').appendChild(image);
+  console.log(img);
+  var file = dataURItoBlob(img);
+  console.log(file);
+
+  function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to an ArrayBuffer
+    var arrayBuffer = new ArrayBuffer(byteString.length);
+    var _ia = new Uint8Array(arrayBuffer);
+    for (var i = 0; i < byteString.length; i++) {
+        _ia[i] = byteString.charCodeAt(i);
+    }
+
+    var dataView = new DataView(arrayBuffer);
+    var blob = new Blob([dataView], { type: mimeString });
+    return blob;
+}
+
+
   //var file = dataURItoBlob(img);
     const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
     new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
-    dT.items.add(new File(['foo'], img));
+    dT.items.add(new File(['test image'], file));
     document.querySelector('#mce-URL').files = dT.files;
     });
 //console.log(artboard);
