@@ -24,7 +24,8 @@
 
   </head>
     <body>
-      <div class="form">
+
+      <form class="form" name="Hustler" method="POST" netlify>
         <label for="fullname" class="stroke">
           I nominate&nbsp;
         </label>
@@ -32,12 +33,30 @@
           <input type="text" class="preview preview-name" id="Name" data-copy="#name" name="Name" required placeholder="name">&nbsp;
         </div>
         <label for="fullname" class="stroke">
-          &#32;because&nbsp;
+          &#32;because they are &nbsp;
         </label>
         <div class="field">
           <input type="text" class="preview preview-reason" data-copy="#reason" name="Reason" required placeholder="reason">
         </div>
-      </div>
+        <label for="fullname" class="stroke">
+          &nbsp;Tell them &nbsp;
+        </label>
+        <div class="field">
+          <input type="text" class="preview preview-reason" data-copy="#sender" name="Sender" required placeholder="your name">
+        </div>
+        <label for="fullname" class="stroke">
+          &nbsp;did it.
+        </label>
+        <label for="fullname" class="stroke">
+          Oh and here's where to tell them:&nbsp;
+        </label>
+        <div class="field">
+          <input type="email" class="preview preview-reason" data-copy="#sender" name="Sender" required placeholder="your name">
+        </div>
+        <label for="fullname" class="stroke">
+          .
+        </label>
+      </form>
 
       <div id="capture">
         <span class="stroke-two">
