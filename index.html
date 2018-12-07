@@ -56,7 +56,7 @@
         <label for="fullname" class="stroke">
           .
         </label>
-        <input type="file" onchange="onFileSelected(event)">
+        <input type="file" data-copy="#image" name="Sender" required placeholder="file">
         <button type="submit">Nominate</button>
       </form>
 
@@ -106,20 +106,6 @@ trailingSpace: -100
 
 
 $("#show").click(function() {
-
-  function onFileSelected(event) {
-  var selectedFile = event.target.files[0];
-  var reader = new FileReader();
-
-  var imgtag = document.getElementById("testimage");
-  imgtag.title = selectedFile.name;
-
-  reader.onload = function(event) {
-    imgtag.src = event.target.result;
-  };
-
-  reader.readAsDataURL(selectedFile);
-}
 
 html2canvas(document.querySelector("#capture")).then(canvas => {
   document.querySelector("#artboard").appendChild(canvas);
