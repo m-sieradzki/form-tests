@@ -25,7 +25,7 @@
   </head>
     <body>
 
-      <form class="form" name="Hustler" method="POST" netlify>
+      <form id="form" class="form" name="Hustler" method="POST" netlify>
         <label for="fullname" class="stroke">
           I nominate&nbsp;
         </label>
@@ -57,7 +57,7 @@
           .
         </label>
         <input type="file" name="URL" required placeholder="file" id="mce-URL">
-        <button type="submit">Nominate</button>
+        <button id="nominate" type="submit">Nominate</button>
       </form>
 
       <div id="capture">
@@ -65,7 +65,7 @@
           You nominate&nbsp;
         </span>
         <span id="reason"><span class="stroke-two">
-          because&nbsp;
+          because they are&nbsp;
         </span></span>
         <br><br><br>
         <!-- <span class="stroke">
@@ -100,24 +100,35 @@ trailingSpace: -100
 });
 
   $(".preview").on('keyup', function() {
-    $("#capture").html('<strong class="stroke-two">You nominate&#32; </strong>' + $(".preview-name").val() + "&#32;" + '<strong class="stroke-two">because&#32;</strong>' + $(".preview-reason").val());
+    $("#capture").html('<strong class="stroke-two">You nominate&#32; </strong>' + $(".preview-name").val() + "&#32;" + '<strong class="stroke-two">because they are&#32;</strong>' + $(".preview-reason").val());
   });
 });
 
-
+var artboard;
 $("#show").click(function() {
 
 html2canvas(document.querySelector("#capture")).then(canvas => {
   document.querySelector("#artboard").appendChild(canvas);
-  var ctx = canvas.getContext("2d");
-});
+  var flatten = canvas.getContext('2d');
+  var img = canvas.toDataURL();
+  console.log("hi" + img);
+  //var file = dataURItoBlob(img);
+    const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
+    new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
+    dT.items.add(new File(['foo'], img));
+    document.querySelector('#mce-URL').files = dT.files;
+    });
+//console.log(artboard);
+//var file = dataURItoBlob(img);
+//document.querySelector('#mce-URL').files = file;
 });
 
 $("#save").click(function() {
+  html2canvas(document.querySelector("#capture")).then(canvas => {
 
-html2canvas(document.querySelector("#capture")).then(canvas => {
-  saveAs(canvas.toDataURL('image/png'), 'file-name.png');
-});
+    //document.querySelector('#mce-URL').files = canvas.toDataURL('image/png');
+    //saveAs(canvas.toDataURL('image/png'), 'file-name.png');
+  });
 });
 
 function saveAs(uri, filename) {
