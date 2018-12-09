@@ -168,7 +168,7 @@ function UploadPic() {
     // Sending the image data to Server
     $.ajax({
         type: 'POST',
-        url: 'upload.aspx/UploadPic',
+        url: 'upload.aspx',
         data: '{ "imageData" : "' + Pic + '" }',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
