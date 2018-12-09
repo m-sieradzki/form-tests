@@ -28,7 +28,8 @@ label {
 }
 
 #save,
-#show{
+#show,
+#upload{
   border: 2px solid red;
   width: 200px;
   height: 60px;

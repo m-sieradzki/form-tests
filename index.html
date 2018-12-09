@@ -25,24 +25,7 @@
 
   </head>
     <body>
-
-      <?php
-      $upload_dir = '/uploads/';
-      $img = $_POST['inp_img'];
-      $img = str_replace('data:image/png;base64,', '', $img);
-      $img = str_replace(' ', '+', $img);
-      $data = base64_decode($img);
-      $file = $upload_dir."image_name.png";
-      $success = file_put_contents($file, $data);
-      header('Location: '.$_POST['return_url']);
-      ?>
-
-      <form method="post" action="" onsubmit="prepareImg();">
-        <input id="inp_img" name="img" value="">
-        <input id="bt_upload" type="submit" value="Upload">
-      </form>
-
-      <!--<form id="form" class="form" name="Hustler" method="POST" netlify>
+      <form id="form" class="form" name="Hustler" method="POST" netlify>
         <label for="fullname" class="stroke">
           I nominate&nbsp;
         </label>
@@ -75,7 +58,7 @@
         </label>
         <input type="file" name="URL" required placeholder="file" id="mce-URL">
         <button id="nominate" type="submit">Nominate</button>
-      </form>-->
+      </form>
 
       <div id="capture">
         <span class="stroke-two">
@@ -102,6 +85,10 @@
       SAVE
       </div>
 
+      <div id="upload">
+      UPLOAD
+      </div>
+
       <div id="artboard">
       </div>
 
@@ -126,9 +113,9 @@ $("#show").click(function() {
 
 html2canvas(document.querySelector("#capture")).then(canvas => {
   document.querySelector("#artboard").appendChild(canvas);
+  canvas.id = "canvas"
   var flatten = canvas.getContext('2d');
-  var data = canvas.toDataURL();
-  document.getElementById('inp_img').value = data;
+  var data = canvas.toDataURL("image/png");
   //var file = dataURItoBlob(img);
   //var encodedPng = data.substring(data.indexOf(',') + 1, data.length);
   //var decodedPng = Base64Binary.decode(encodedPng);
@@ -167,6 +154,29 @@ html2canvas(document.querySelector("#capture")).then(canvas => {
 //var file = dataURItoBlob(img);
 //document.querySelector('#mce-URL').files = file;
 });
+
+$("#upload").click(function() {
+  UploadPic();
+});
+
+function UploadPic() {
+
+    // Generate the image data
+    var Pic = document.getElementById("canvas").toDataURL("image/png");
+    Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "")
+
+    // Sending the image data to Server
+    $.ajax({
+        type: 'POST',
+        url: 'upload.aspx/UploadPic',
+        data: '{ "imageData" : "' + Pic + '" }',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (msg) {
+            alert("Done, Picture Uploaded.");
+        }
+    });
+};
 
 $("#save").click(function() {
   html2canvas(document.querySelector("#capture")).then(canvas => {
