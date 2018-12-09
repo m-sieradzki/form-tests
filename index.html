@@ -18,6 +18,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="html2canvas.min.js"></script>
+    <script src="base64binary.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/input-autogrow/1.1.0/input-autogrow.min.js"></script>
 
     <link rel="stylesheet" href="stylesheet.css" />
@@ -25,7 +26,25 @@
   </head>
     <body>
 
-      <form id="form" class="form" name="Hustler" method="POST" netlify>
+      <?php
+
+      if (count($_POST) && (strpos($_POST['img'], 'data:image/png;base64') === 0)) {
+
+        $img = $_POST['img'];
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+        $file = 'uploads/img'.date("YmdHis").'.png';
+      }
+
+      ?>
+
+      <form method="post" action="" onsubmit="prepareImg();">
+        <input id="inp_img" name="img" value="">
+        <input id="bt_upload" type="submit" value="Upload">
+      </form>
+
+      <!--<form id="form" class="form" name="Hustler" method="POST" netlify>
         <label for="fullname" class="stroke">
           I nominate&nbsp;
         </label>
@@ -58,7 +77,7 @@
         </label>
         <input type="file" name="URL" required placeholder="file" id="mce-URL">
         <button id="nominate" type="submit">Nominate</button>
-      </form>
+      </form>-->
 
       <div id="capture">
         <span class="stroke-two">
@@ -88,7 +107,7 @@
       <div id="artboard">
       </div>
 
-      <img id="testimage" src="file-name.png"></img>
+      <!--<img id="testimage" src="file-name.png"></img>-->
 
       <script type="text/javascript">
         $(document).ready(function() {
@@ -110,14 +129,15 @@ $("#show").click(function() {
 html2canvas(document.querySelector("#capture")).then(canvas => {
   document.querySelector("#artboard").appendChild(canvas);
   var flatten = canvas.getContext('2d');
-  var img = canvas.toDataURL();
+  var data = canvas.toDataURL();
+  document.getElementById('inp_img').value = data;
+  //var file = dataURItoBlob(img);
+  //var encodedPng = data.substring(data.indexOf(',') + 1, data.length);
+  //var decodedPng = Base64Binary.decode(encodedPng);
   var image = new Image();
-  image.id = "pic"
-  image.src = img
+  image.id = "pic";
+  image.src = data;
   document.getElementById('artboard').appendChild(image);
-  console.log(img);
-  var file = dataURItoBlob(img);
-  console.log(file);
 
   function dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
@@ -140,10 +160,10 @@ html2canvas(document.querySelector("#capture")).then(canvas => {
 
 
   //var file = dataURItoBlob(img);
-    const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
-    new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
-    dT.items.add(new File(['test image'], file));
-    document.querySelector('#mce-URL').files = dT.files;
+    //const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
+    //new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
+    //dT.items.add(new File(['test image'], file));
+    //document.querySelector('#mce-URL').files = dT.files;
     });
 //console.log(artboard);
 //var file = dataURItoBlob(img);
@@ -184,6 +204,6 @@ if (typeof link.download === 'string') {
 }
         </script>
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
-        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c0cf92d141c0a23"></script>
+        <!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c0cf92d141c0a23"></script>-->
     </body>
   </html>
