@@ -27,16 +27,14 @@
     <body>
 
       <?php
-
-      if (count($_POST) && (strpos($_POST['img'], 'data:image/png;base64') === 0)) {
-
-        $img = $_POST['img'];
-        $img = str_replace('data:image/png;base64,', '', $img);
-        $img = str_replace(' ', '+', $img);
-        $data = base64_decode($img);
-        $file = 'uploads/img'.date("YmdHis").'.png';
-      }
-
+      $upload_dir = '/uploads/';
+      $img = $_POST['inp_img'];
+      $img = str_replace('data:image/png;base64,', '', $img);
+      $img = str_replace(' ', '+', $img);
+      $data = base64_decode($img);
+      $file = $upload_dir."image_name.png";
+      $success = file_put_contents($file, $data);
+      header('Location: '.$_POST['return_url']);
       ?>
 
       <form method="post" action="" onsubmit="prepareImg();">
