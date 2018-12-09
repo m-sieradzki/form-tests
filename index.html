@@ -67,8 +67,8 @@
       </form>-->
 
       <form class="upload_form">
-        <input type="file" name="image" required placeholder="file" id="testform">
-        <button id="nominate" type="submit">Nominate</button>
+        <input class="cloudinary-fileupload" data-cloudinary-field="image_id" type="file" name="file" required placeholder="file" id="testform">
+        <button id="nominate">Nominate</button>
       </form>
 
       <div id="capture">
@@ -109,8 +109,19 @@
       <script type="text/javascript">
         $(document).ready(function() {
 
-          $('.upload_form').append($.cloudinary.unsigned_upload_tag("testytest",
-            { cloud_name: 'mariaxxix' }));
+          $.cloudinary.config({ cloud_name: 'mariaxxix', secure: true});
+
+          if($.fn.cloudinary_fileupload !== undefined) {
+            $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+          }
+
+          $('#nominate').click(function(){
+            var url = 'https://api.cloudinary.com/v1_1/mariaxxix/image/upload';
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+          });
 
 $('input').inputAutogrow({
 minWidth: 50,
