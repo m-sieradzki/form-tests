@@ -16,6 +16,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="html2canvas.min.js"></script>
     <script src="base64binary.js"></script>
@@ -185,6 +188,11 @@
 
           $('#uploaded').click(function(){
             var imageSrc = $(this).attr('src');
+
+            $("meta[property='twitter\\:image']").attr("content", imageSrc);
+            window.open('https://twitter.com/intent/tweet?text=https://awesome-haibt-71e116.netlify.com/', '_blank');
+
+            // FACEBOOK
             FB.ui({
           		method: 'share_open_graph',
           		action_type: 'og.likes',
@@ -269,7 +277,7 @@ $("#save").click(function() {
 
 $("#upload").click(function() {
   html2canvas(document.querySelector("#capture")).then(canvas => {
-    canvas.id = "canvas"
+    canvas.id = "canvas";
     var flatten = canvas.getContext('2d');
     var data = canvas.toDataURL("image/png");
     const dataSend = new FormData();
