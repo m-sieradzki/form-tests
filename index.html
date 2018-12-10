@@ -30,7 +30,7 @@
 
   </head>
     <body>
-      <!--
+
       <form id="form" class="form" name="Hustler" method="POST" netlify>
         <label for="fullname" class="stroke">
           I nominate&nbsp;
@@ -62,29 +62,52 @@
         <label for="fullname" class="stroke">
           .
         </label>
-        <input type="file" name="URL" required placeholder="file" id="mce-URL">
         <button id="nominate" type="submit">Nominate</button>
-      </form>-->
-
-      <form class="upload_form">
-        <input class="cloudinary-fileupload" data-cloudinary-field="image_id" type="file" name="file" required placeholder="file" id="testform">
-        <button id="nominate">Nominate</button>
       </form>
+
+      <img id="uploaded">
+      <div id="results"></div>
+
+      <!--
+      <h1>Upload to Cloudinary with FormData</h1>
+      <div>
+      <p>
+
+      Set your cloud name in the API URL in the code:  "https://api.cloudinary.com/v1_1/<strong>&lt;cloud&nbsp;name&gt;</strong>/image/upload" before running the example.
+      </p>
+      </div>
+      <form action="" method="post" enctype="multipart/form-data" onsubmit="AJAXSubmit(this); return false;">
+        <fieldset>
+          <legend>Upload example</legend>
+          <p>
+            <label for="upload_preset">Unsigned upload Preset: <input type="text" name="upload_preset" value="testytest"></label>
+          </p>
+          <p>
+            <label >Select your photo:
+            <input class="image_upload" id="image_upload" type="file" name="file"></label>
+          </p>
+
+          <p>
+            <input type="submit" value="Submit" />
+          </p>
+          <img id="uploaded">
+          <div id="results"></div>
+        </fieldset>
+      </form>
+    -->
 
       <div id="capture">
         <span class="stroke-two">
           You nominate&nbsp;
         </span>
-        <span id="reason"><span class="stroke-two">
-          because they are&nbsp;
-        </span></span>
-        <br><br><br>
-        <svg xmlns="http://www.w3.org/2000/svg" width="640" height="100" viewBox="0 0 640 72">
-        <text x="0" y="64">Outline 1</text>
-        </svg></span>
-        <span class="stroke-two">
-        Outline 2
-      </span>
+        <span id="reason">
+          <span class="stroke-two">
+            because they are&nbsp;
+          </span>
+          <span class="stroke-two">
+            &nbsp;.
+          </span>
+        </span>
 
       </div>
 
@@ -105,23 +128,40 @@
 
       <!--<img id="testimage" src="file-name.png"></img>-->
 
-
-      <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function() {
 
-          $.cloudinary.config({ cloud_name: 'mariaxxix', secure: true});
+          $.cloudinary.config({
+            "cloud_name": "mariaxxix",
+            "api_key": "578125755345546",
+            "uploadPreset": "testytest",
+            "private_cdn": false,
+            "cdn_subdomain": false
+          });
 
-          if($.fn.cloudinary_fileupload !== undefined) {
-            $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+          $(function() {
+            if($.fn.cloudinary_fileupload !== undefined) {
+              $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+            }
+          });
+
+
+          window.ajaxSuccess = function () {
+          	response = JSON.parse(this.responseText);
+            console.log("ajaxSuccess", typeof this.responseText);
+            document.getElementById('uploaded').setAttribute("src", response["secure_url"]);
+            document.getElementById('results').innerText = this.responseText;
           }
 
-          $('#nominate').click(function(){
-            var url = 'https://api.cloudinary.com/v1_1/mariaxxix/image/upload';
+          window.AJAXSubmit = function (formElement) {
+            console.log("starting AJAXSubmit");
+            if (!formElement.action) { return; }
             var xhr = new XMLHttpRequest();
-            var fd = new FormData();
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-          });
+            xhr.onload = ajaxSuccess;
+            xhr.open("post", "https://api.cloudinary.com/v1_1/mariaxxix/image/upload",false);
+            xhr.send(new FormData(formElement));
+          }
+
 
 $('input').inputAutogrow({
 minWidth: 50,
@@ -129,7 +169,7 @@ trailingSpace: -100
 });
 
   $(".preview").on('keyup', function() {
-    $("#capture").html('<strong class="stroke-two">You nominate&#32; </strong>' + $(".preview-name").val() + "&#32;" + '<strong class="stroke-two">because they are&#32;</strong>' + $(".preview-reason").val());
+    $("#capture").html('<strong class="stroke-two">You nominate&#32; </strong>' + $(".preview-name").val() + "&#32;" + '<strong class="stroke-two">because they are&#32;</strong>' + $(".preview-reason").val() + '<strong class="stroke-two">.</strong>');
   });
 });
 
@@ -141,13 +181,15 @@ html2canvas(document.querySelector("#capture")).then(canvas => {
   canvas.id = "canvas"
   var flatten = canvas.getContext('2d');
   var data = canvas.toDataURL("image/png");
-  //var file = dataURItoBlob(img);
+  var file = dataURItoBlob(data);
   //var encodedPng = data.substring(data.indexOf(',') + 1, data.length);
   //var decodedPng = Base64Binary.decode(encodedPng);
   var image = new Image();
   image.id = "pic";
   image.src = data;
   document.getElementById('artboard').appendChild(image);
+
+
 
   function dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
@@ -168,12 +210,10 @@ html2canvas(document.querySelector("#capture")).then(canvas => {
     return blob;
 }
 
-
-  //var file = dataURItoBlob(img);
-    //const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
-    //new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
-    //dT.items.add(new File(['test image'], file));
-    //document.querySelector('#mce-URL').files = dT.files;
+    const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
+    new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
+    dT.items.add(new File(['test image'], data));
+    document.querySelector('#image_upload').files = dT.files;
     });
 //console.log(artboard);
 //var file = dataURItoBlob(img);
@@ -185,6 +225,22 @@ $("#save").click(function() {
 
     //document.querySelector('#mce-URL').files = canvas.toDataURL('image/png');
     //saveAs(canvas.toDataURL('image/png'), 'file-name.png');
+  });
+});
+
+$("#upload").click(function() {
+  html2canvas(document.querySelector("#capture")).then(canvas => {
+    canvas.id = "canvas"
+    var flatten = canvas.getContext('2d');
+    var data = canvas.toDataURL("image/png");
+    const dataSend = new FormData();
+    var uploadPreset = 'testytest';
+    dataSend.append('upload_preset', uploadPreset);
+    dataSend.append('file', data);
+    var xhr = new XMLHttpRequest();
+    xhr.onload = ajaxSuccess;
+    xhr.open("post", "https://api.cloudinary.com/v1_1/mariaxxix/image/upload");
+    xhr.send(dataSend);
   });
 });
 
@@ -213,7 +269,6 @@ if (typeof link.download === 'string') {
 }
 }
         </script>
-        <!-- Go to www.addthis.com/dashboard to customize your tools -->
-        <!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c0cf92d141c0a23"></script>-->
+        <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c0cf92d141c0a23"></script>
     </body>
   </html>
