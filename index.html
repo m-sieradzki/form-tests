@@ -23,7 +23,7 @@
     <meta name="twitter:image" content="">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="html2canvas.min.js" crossorigin="anonymous"></script>
+    <script src="html2canvas.min.js"></script>
     <script src="base64binary.js"></script>
 
     <link rel="stylesheet" href="stylesheet.css" />
@@ -118,7 +118,7 @@
     -->
 
       <div id="capture">
-        <!--<span class="stroke-two">
+        <span class="stroke-two">
           You nominate&nbsp;
         </span>
         <span id="reason">
@@ -127,7 +127,7 @@
           </span>
           <span class="stroke-two">
             &nbsp;.
-          </span>-->
+          </span>
         </span>
 
       </div>
@@ -263,10 +263,6 @@ $("#show").click(function() {
 //document.querySelector('#mce-URL').files = file;
 });
 
-function canvasFallback(){
-  console.log('NEIN');
-}
-
 $("#save").click(function() {
   html2canvas(document.querySelector("#capture")).then(canvas => {
 
@@ -318,6 +314,10 @@ if (typeof link.download === 'string') {
 };
 
 });
+
+function canvasFallback(){
+  console.log('FALLBACK');
+}
         </script>
     </body>
   </html>
