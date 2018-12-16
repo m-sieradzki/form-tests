@@ -22,12 +22,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="html2canvas.min.js"></script>
     <script src="base64binary.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/input-autogrow/1.1.0/input-autogrow.min.js"></script>
-    <script src="node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js"              type="text/javascript"></script>
-    <script src="node_modules/blueimp-file-upload/js/jquery.iframe-transport.js"              type="text/javascript"></script>
-    <script src="node_modules/blueimp-file-upload/js/jquery.fileupload.js"                    type="text/javascript"></script>
-
-    <script src="node_modules/cloudinary-jquery-file-upload/cloudinary-jquery-file-upload.js" type="text/javascript"></script>
 
     <link rel="stylesheet" href="stylesheet.css" />
 
@@ -148,14 +142,16 @@
       </div>
 
       <div id="artboard">
+        <img id="testimg">
       </div>
 
       <!--<img id="testimage" src="file-name.png"></img>-->
 
 <script type="text/javascript">
+
         $(document).ready(function() {
 
-          $.cloudinary.config({
+          /*$.cloudinary.config({
             "cloud_name": "mariaxxix",
             "api_key": "578125755345546",
             "uploadPreset": "testytest",
@@ -167,10 +163,10 @@
             if($.fn.cloudinary_fileupload !== undefined) {
               $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
             }
-          });
+          });*/
 
 
-          window.ajaxSuccess = function () {
+          /*window.ajaxSuccess = function () {
           	response = JSON.parse(this.responseText);
             console.log("ajaxSuccess", typeof this.responseText);
             document.getElementById('uploaded').setAttribute("src", response["secure_url"]);
@@ -208,36 +204,32 @@
           	function (response) {
           	// Action after response
           	});
-          })
+          })*/
 
-$('input').inputAutogrow({
-minWidth: 50,
-trailingSpace: -100
-});
 
   $(".preview").on('keyup', function() {
     $("#capture").html('<strong class="stroke-two">You nominate&#32; </strong>' + $(".preview-name").val() + "&#32;" + '<strong class="stroke-two">because they are&#32;</strong>' + $(".preview-reason").val() + '<strong class="stroke-two">.</strong>');
   });
-});
+
 
 var artboard;
 $("#show").click(function() {
 
-html2canvas(document.querySelector("#capture"),{useCORS:true,async:true}).then(canvas => {
-  document.querySelector("#artboard").appendChild(canvas);
-  canvas.id = "canvas"
-  var flatten = canvas.getContext('2d');
-  var data = canvas.toDataURL("image/png");
-  var file = dataURItoBlob(data);
-  //var encodedPng = data.substring(data.indexOf(',') + 1, data.length);
-  //var decodedPng = Base64Binary.decode(encodedPng);
-  var image = new Image();
-  image.id = "pic";
-  image.src = data;
-  //img.crossOrigin = "Anonymous";
-  document.getElementById('artboard').appendChild(image);
-
-
+  html2canvas(document.querySelector("#capture"),{useCORS:true,async:true}).then(canvas => {
+    document.querySelector("#artboard").appendChild(canvas);
+    canvas.id = "canvas"
+    var flatten = canvas.getContext('2d');
+    var data = canvas.toDataURL("image/png");
+    //var file = dataURItoBlob(data);
+    //var encodedPng = data.substring(data.indexOf(',') + 1, data.length);
+    //var decodedPng = Base64Binary.decode(encodedPng);
+    var image = new Image();
+    image.id = "pic";
+    image.src = data;
+    //img.crossOrigin = "Anonymous";
+    document.getElementById('artboard').appendChild(image);
+  });
+  /*
 
   function dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
@@ -262,7 +254,7 @@ html2canvas(document.querySelector("#capture"),{useCORS:true,async:true}).then(c
     new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
     dT.items.add(new File(['test image'], data));
     document.querySelector('#image_upload').files = dT.files;
-    });
+  });*/
 //console.log(artboard);
 //var file = dataURItoBlob(img);
 //document.querySelector('#mce-URL').files = file;
@@ -277,6 +269,7 @@ $("#save").click(function() {
 });
 
 $("#upload").click(function() {
+  /*
   html2canvas(document.querySelector("#capture")).then(canvas => {
     canvas.id = "canvas";
     var flatten = canvas.getContext('2d');
@@ -289,7 +282,7 @@ $("#upload").click(function() {
     xhr.onload = ajaxSuccess;
     xhr.open("post", "https://api.cloudinary.com/v1_1/mariaxxix/image/upload");
     xhr.send(dataSend);
-  });
+  });*/
 });
 
 function saveAs(uri, filename) {
@@ -316,7 +309,8 @@ if (typeof link.download === 'string') {
 
 };
 };
+
+});
         </script>
-        <!--<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c0cf92d141c0a23"></script>-->
     </body>
   </html>
