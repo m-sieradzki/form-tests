@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="stylesheet.css" />
 
     <script>
-      window.fbAsyncInit = function() {
+      /*window.fbAsyncInit = function() {
     	FB.init({
     	  appId            : '1450842851714218',
     	  autoLogAppEvents : true,
@@ -48,7 +48,7 @@
     	 js = d.createElement(s); js.id = id;
     	 js.src = "https://connect.facebook.net/en_US/sdk.js";
     	 fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
+     }(document, 'script', 'facebook-jssdk'));*/
     </script>
 
   </head>
@@ -234,6 +234,7 @@ html2canvas(document.querySelector("#capture")).then(canvas => {
   var image = new Image();
   image.id = "pic";
   image.src = data;
+  //img.crossOrigin = "Anonymous";
   document.getElementById('artboard').appendChild(image);
 
 
@@ -313,8 +314,8 @@ if (typeof link.download === 'string') {
 
     window.open(uri);
 
-}
-}
+};
+};
         </script>
         <!--<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c0cf92d141c0a23"></script>-->
     </body>
