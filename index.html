@@ -229,7 +229,7 @@ $("#show").click(function() {
     var image = new Image();
     image.id = "pic";
     image.src = data;
-    //img.crossOrigin = "Anonymous";
+    image.setAttribute('crossOrigin', 'anonymous');
     document.getElementById('artboard').appendChild(image);
   });
   /*
