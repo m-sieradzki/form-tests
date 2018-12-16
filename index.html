@@ -223,7 +223,7 @@ trailingSpace: -100
 var artboard;
 $("#show").click(function() {
 
-html2canvas(document.querySelector("#capture")).then(canvas => {
+html2canvas(document.querySelector("#capture"),{useCORS:true,async:true}).then(canvas => {
   document.querySelector("#artboard").appendChild(canvas);
   canvas.id = "canvas"
   var flatten = canvas.getContext('2d');
